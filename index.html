@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64x64.png" />
   <script src="assets/js/session-timeout.js" defer></script>
 </head>
 <body>
@@ -39,6 +40,11 @@
         const sound = new Audio("assets/sfx/ignition.mp3");
         sound.play();
 
+     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("logout") === "timeout") {
+    alert("נותקת מהמערכת עקב חוסר פעילות");
+    }
+
         // Visual animation (full screen feedback)
         document.body.innerHTML = `
           <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;">
@@ -48,7 +54,7 @@
         `;
 
         setTimeout(() => {
-          window.location.href = "start-case.html";
+          window.location.href = "nav.html";
         }, 1700); // delay to let sound finish
       } else {
         alert("סיסמה שגויה");

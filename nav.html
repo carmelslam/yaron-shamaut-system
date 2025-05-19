@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>פרטים כלליים</title>
+  <title>מרכז ניהול</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
@@ -13,29 +13,17 @@
 <body>
   <main class="centered">
     <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
-    <h1>ירון כיוף</h1>
-    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
-    <h3>פרטים כלליים</h3>
+    <h1>מרכז ניהול</h1>
     <div class="page-content">
-      <form id="generalForm">
-        <!-- form fields here -->
-      </form>
+      <button onclick="location.href='summary.html'">צפייה בדוחות</button>
+      <button onclick="location.href='start-case.html'">פתיחת תיק חדש</button>
+      <a href="https://ycshamautcoil-my.sharepoint.com/personal/yaron_yc-shamaut_co_il/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyaron%5Fyc%2Dshamaut%5Fco%5Fil%2FDocuments%2FYC%20%D7%A9%D7%9E%D7%90%D7%95%D7%AA%2F%D7%AA%D7%99%D7%A7%D7%99%D7%9D%20%D7%A4%D7%AA%D7%95%D7%97%D7%99%D7%9D&ga=1" target="_blank">
+        <button>צפייה בתיקיות OneDrive</button>
+      </a>
     </div>
   </main>
   <footer class="main-footer">
     All rights reserved © Carmel Cayouf
   </footer>
-  <script type="module">
-    import { Meta } from './engine/MetaEngine.js';
-    import { maybeInitPush } from './engine/push-handler.js';
-    import { injectDock } from './engine/floating-panels.js';
-    window.addEventListener("DOMContentLoaded", () => {
-      Meta.init({ systemOrigin: "main-system-v1" });
-      Meta.verify();
-      maybeInitPush();
-      const meta = Meta.getAll();
-      injectDock(meta);
-    });
-  </script>
 </body>
 </html>

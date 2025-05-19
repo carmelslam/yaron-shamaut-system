@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ירון כיוף | פורטל ניווט</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>מרכז ניהול</h3>
+
+    <div class="page-content">
+      <button onclick="location.href='start-case.html'">➕ פתיחת תיק חדש</button>
+      <button onclick="location.href='summary.html'">📝 חזרה לטיוטה האחרונה</button>
+      <button onclick="location.href='final-report.html'">📄 דוחות נוכחיים</button>
+      <button onclick="location.href='levi-inline.html'">📤 העלאת דו״ח לוי</button>
+      <button onclick="location.href='parts-platform.html'">🧩 ממשק חלקים</button>
+      <button onclick="location.href='upload-images.html'">🖼️ העלאת תמונות</button>
+      <button onclick="location.href='admin-hub.html'">🛠️ מרכז אדמין</button>
+      <button onclick="window.open('https://ycshamautcoil-my.sharepoint.com/personal/yaron_yc-shamaut_co_il/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fyaron%5Fyc%2Dshamaut%5Fco%5Fil%2FDocuments%2FYC%20%D7%A9%D7%9E%D7%90%D7%95%D7%AA%2F%D7%AA%D7%99%D7%A7%D7%99%D7%9D%20%D7%A4%D7%AA%D7%95%D7%97%D7%99%D7%9D&ga=1', '_blank')">
+        📂 תיקים פתוחים (OneDrive)
+      </button>
+      <button onclick="logout()">🚪 יציאה מהמערכת</button>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+
+  <script>
+    function logout() {
+      sessionStorage.clear();
+      localStorage.clear();
+      alert("התנתקת מהמערכת.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

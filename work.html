@@ -1,0 +1,12 @@
+<script type="module">
+import { Meta } from './engine/MetaEngine.js';
+import { maybeInitPush } from './engine/push-handler.js';
+import { injectDock } from './engine/floating-panels.js';
+window.addEventListener("DOMContentLoaded", () => {
+  Meta.init({ systemOrigin: "main-system-v1" });
+  Meta.verify();
+  maybeInitPush();
+  const meta = Meta.getAll();
+  injectDock(meta);
+});
+</script>

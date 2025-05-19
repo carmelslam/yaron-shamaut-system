@@ -14,7 +14,7 @@ function resetSessionTimer() {
 
   // Logout at 10 mins
   logoutTimer = setTimeout(() => {
-    window.location.href = "index.html"; // Or a custom logout page
+    triggerLogout("timeout");
   }, 10 * 60 * 1000);
 }
 
@@ -45,10 +45,16 @@ function dismissWarning() {
   resetSessionTimer();
 }
 
-// Reset session on any interaction
+function triggerLogout(reason = "timeout") {
+  sessionStorage.clear();
+  localStorage.clear();
+  window.location.href = `index.html?logout=${reason}`;
+}
+
+// Reset session on interaction
 ["click", "keydown", "mousemove", "touchstart"].forEach(evt => {
   document.addEventListener(evt, resetSessionTimer, { passive: true });
 });
 
-// Start the session clock
+// Start timer
 window.addEventListener("DOMContentLoaded", resetSessionTimer);
