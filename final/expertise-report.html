@@ -2,9 +2,11 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>דו"ח שמאות - אקספירטיזה</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>דו"ח שמאות - אקספירטיז'ה</title>
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="icon" href="../assets/img/favicon.ico" type="image/x-icon" />
   <script src="../assets/js/session-timeout.js" defer></script>
   <style>
     body {
@@ -26,10 +28,51 @@
     .legal { font-size: 0.85em; color: #555; margin-top: 30px; }
     .meta { font-size: 0.8em; color: #999; margin-top: 60px; border-top: 1px solid #ddd; padding-top: 10px; }
   </style>
+</head>
+<body>
+  <main class="centered">
+    <img src="../assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>דו"ח שמאות - אקספירטיז'ה</h3>
+    <div class="page-content">
+      <div class="block">
+        <h2>פרטי רכב</h2>
+        <p><strong>מספר רכב:</strong> <span id="plate"></span></p>
+        <p><strong>VIN:</strong> <span id="vin"></span></p>
+        <p><strong>דגם:</strong> <span id="model"></span></p>
+        <p><strong>תאריך בדיקה:</strong> <span id="date"></span></p>
+        <p><strong>הנחיה לתיקון:</strong> <span class="status" id="status"></span></p>
+      </div>
+      <div class="block" id="damageBlocks">
+        <h2>מוקדי נזק</h2>
+      </div>
+      <div class="block">
+        <h2>התאמות לוי</h2>
+        <ul id="leviList"></ul>
+      </div>
+      <div class="legal">
+        <h2>הצהרות משפטיות</h2>
+        <ol>
+          <li>יש להודיע לשמאי על כל נזק נוסף שיתגלה במהלך התיקון ולקבל אישור בכתב להוספתו.</li>
+          <li>הצעת תיקון זו כפופה לעיון בטופס התביעה.</li>
+          <li>החלקים שיפורקו מהרכב יעמדו לרשות חברת הביטוח.</li>
+          <li>הצעה זו אינה מחייבת את חברת הביטוח לתשלום כלשהו.</li>
+        </ol>
+        <p><strong>ירון כיוף</strong>, שמאי רכב מס' 1097</p>
+        <img class="signature-img" src="../assets/img/yaron-signature-transparent-.webp" />
+      </div>
+      <div class="meta" id="metaFooter"></div>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
   <script type="module">
     import { Meta } from '../engine/MetaEngine.js';
     import { maybeInitPush } from '../engine/push-handler.js';
     window.addEventListener("DOMContentLoaded", () => {
+      Meta.init({ systemOrigin: "main-system-v1" });
       Meta.verify();
       maybeInitPush();
       const meta = Meta.getAll();
@@ -65,45 +108,5 @@
       document.getElementById("metaFooter").innerHTML = `מזהה תיק: ${id} | מערכת: ${sys} | תאריך הפקה: ${dateStamp}`;
     });
   </script>
-</head>
-<body>
-  <main class="centered">
-    <img src="../assets/img/logo-yaron.webp" alt="לוגו" class="logo" style="max-width:140px;">
-    <h1>ירון כיוף</h1>
-    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
-    <h3>דו"ח שמאות רכב - חוות דעת</h3>
-    <div class="page-content">
-      <div class="block">
-        <h2>פרטי רכב</h2>
-        <p><strong>מספר רכב:</strong> <span id="plate"></span></p>
-        <p><strong>VIN:</strong> <span id="vin"></span></p>
-        <p><strong>דגם:</strong> <span id="model"></span></p>
-        <p><strong>תאריך בדיקה:</strong> <span id="date"></span></p>
-        <p><strong>הנחיה לתיקון:</strong> <span class="status" id="status"></span></p>
-      </div>
-      <div class="block" id="damageBlocks">
-        <h2>מוקדי נזק</h2>
-      </div>
-      <div class="block">
-        <h2>התאמות לוי</h2>
-        <ul id="leviList"></ul>
-      </div>
-      <div class="legal">
-        <h2>הצהרות משפטיות</h2>
-        <ol>
-          <li>יש להודיע לשמאי על כל נזק נוסף שיתגלה במהלך התיקון ולקבל אישור בכתב להוספתו.</li>
-          <li>הצעת תיקון זו כפופה לעיון בטופס התביעה.</li>
-          <li>החלקים שיפורקו מהרכב יעמדו לרשות חברת הביטוח.</li>
-          <li>הצעה זו אינה מחייבת את חברת הביטוח לתשלום כלשהו.</li>
-        </ol>
-        <p><strong>ירון כיוף</strong>, שמאי רכב מס' 1097</p>
-        <img class="signature-img" src="../assets/img/yaron-signature-transparent-.webp" />
-      </div>
-      <div class="meta" id="metaFooter"></div>
-    </div>
-  </main>
-  <footer class="main-footer">
-    All rights reserved © Carmel Cayouf
-  </footer>
 </body>
 </html>

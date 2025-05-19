@@ -6,19 +6,8 @@
   <title>ירון כיוף | פורטל שמאות</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
-
-  <!-- MetaEngine Boot -->
-  <script type="module">
-    import { Meta } from './engine/MetaEngine.js';
-
-    window.addEventListener("DOMContentLoaded", () => {
-      Meta.init({ systemOrigin: "main-system-v1" });
-      Meta.verify();
-      Meta.set("systemOrigin", "main-system-v1");
-      Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
-    });
-  </script>
 </head>
 <body>
   <main class="centered">

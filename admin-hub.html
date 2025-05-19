@@ -6,51 +6,47 @@
   <title>ניהול מערכת</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
 </head>
 <body>
   <main class="centered">
-    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
     <h1>ירון כיוף</h1>
     <h2>שמאות והערכת נזקי רכב ורכוש</h2>
     <h3>ניהול מערכת</h3>
     <div class="page-content">
       <section>
         <h2>שליטה במערכת</h2>
-        <button onclick="Admin.toggleSystemMode()">🔁 החלף בין מערכת רגילה/גיבוי</button>
-        <button onclick="Admin.setPermission()">🔒 נהל הרשאות</button>
+        <button onclick="Admin.toggleSystemMode()">החלף בין מערכת רגילה/גיבוי</button>
+        <button onclick="Admin.setPermission()">נהל הרשאות</button>
       </section>
 
       <section>
         <h2>שליפת תיק מהמטא</h2>
         <input id="plateSearch" placeholder="מספר רכב..." />
-        <button onclick="Admin.pullCase()">📂 שלוף תיק</button>
+        <button onclick="Admin.pullCase()">שלוף תיק</button>
       </section>
 
       <section>
         <h2>סנכרון ועדכון</h2>
-        <button onclick="Admin.pushMetadata()">📤 עדכן מטא למערכת</button>
-        <button onclick="Admin.sendToMake()">📨 שלח דו״ח סופי</button>
+        <button onclick="Admin.pushMetadata()">עדכן מטא למערכת</button>
+        <button onclick="Admin.sendToMake()">שלח דוח סופי</button>
       </section>
 
       <section>
-        <h2>דו״חות פתוחים</h2>
-        <button onclick="Admin.showPending()">📑 הצג דו״חות לא סגורים</button>
+        <h2>דוחות פתוחים</h2>
+        <button onclick="Admin.showPending()">הצג דוחות לא סגורים</button>
       </section>
 
       <section>
         <h2>ניהול חשבוניות</h2>
-        <button onclick="window.location.href='invoice-upload.html'">🧾 העלאת חשבונית</button>
+        <button onclick="window.location.href='invoice-upload.html'">העלאת חשבונית</button>
       </section>
 
       <section>
         <h2>מודול חיפוש</h2>
-        <button onclick="window.location.href='search-module.html'">🔍 מעבר למודול חיפוש</button>
-      </section>
-
-      <section>
-        <h2>לוגים ועדכונים</h2>
-        <button onclick="window.location.href='notifications.html'">🔔 התראות & סטטוסים</button>
+        <button onclick="window.location.href='search-module.html'">מעבר למודול חיפוש</button>
       </section>
     </div>
   </main>
@@ -61,6 +57,7 @@
     import { Meta } from './engine/MetaEngine.js';
     import { maybeInitPush } from './engine/push-handler.js';
     window.addEventListener("DOMContentLoaded", () => {
+      Meta.init({ systemOrigin: "main-system-v1" });
       Meta.verify();
       maybeInitPush();
     });

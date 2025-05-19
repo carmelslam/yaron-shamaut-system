@@ -6,6 +6,7 @@
   <title>מוקד נזק</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
 </head>
 <body>
@@ -30,7 +31,7 @@
       <label>תיקונים (מופרדים בפסיקים):</label>
       <input type="text" id="repairs"><br><br>
 
-      <label>עבודות (מופרדים בפסיקים):</label>
+      <label>עבודות (מופרדות בפסיקים):</label>
       <input type="text" id="work"><br><br>
 
       <label>שיעור ירידת ערך (%):</label>
@@ -112,6 +113,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       populate("centerZone", zones);
       populate("damageArea", parts);
+      Meta.init({ systemOrigin: "main-system-v1" });
       Meta.verify();
       maybeInitPush();
     });

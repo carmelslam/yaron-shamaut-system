@@ -6,6 +6,7 @@
   <title>דו"ח סופי</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
   <style>
     body {
@@ -51,15 +52,6 @@
       background: #f1f1f1;
     }
   </style>
-  <script type="module">
-    import { Meta } from './engine/MetaEngine.js';
-    import { maybeInitPush } from './engine/push-handler.js';
-
-    window.addEventListener("DOMContentLoaded", () => {
-      Meta.verify();
-      maybeInitPush();
-    });
-  </script>
 </head>
 <body>
   <main class="centered">
@@ -68,11 +60,20 @@
     <h2>שמאות והערכת נזקי רכב ורכוש</h2>
     <h3>דו"ח סופי</h3>
     <div class="page-content">
-      <!-- ...existing form/fields/buttons for final report... -->
+      <!-- page-specific content here -->
     </div>
   </main>
   <footer class="main-footer">
     All rights reserved © Carmel Cayouf
   </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.init({ systemOrigin: "main-system-v1" });
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
 </body>
 </html>

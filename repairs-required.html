@@ -6,6 +6,7 @@
   <title>תיקונים נדרשים</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
 </head>
 <body>
@@ -29,6 +30,7 @@
     import { Meta } from './engine/MetaEngine.js';
     import { maybeInitPush } from './engine/push-handler.js';
     window.addEventListener("DOMContentLoaded", () => {
+      Meta.init({ systemOrigin: "main-system-v1" });
       Meta.verify();
       maybeInitPush();
     });
