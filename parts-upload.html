@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />  <title>חיפוש חלקים בטקסט חופשי</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+    });
+
+    async function sendSearch() {
+      const query = document.getElementById("query").value;
+      if (!query) return alert("נא להזין מילות חיפוש");
+
+      const car = Meta.get("car") || {};
+      const payload = {
+        caseId: Meta.get("caseId"),
+        systemOrigin: "main-system-v1",
+        mode: "free-text",
+        input: query,
+        carDetails: {
+          plate: car.plate,
+          make: car.make,
+          model: car.model,
+          year: car.year,
+          engine: car.engine
+        }
+      };
+
+      try {
+        const res = await fetch("https://hooks.make.com/parts-text-search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          notify("📤 הבקשה נשלחה ל-Make");
+          window.location.href = "summary.html"; // or wherever you want to lead
+        } else {
+          notify("⚠️ שליחה נכשלה");
+        }
+      } catch (e) {
+        notify("❌ שגיאת רשת: " + e.message);
+      }
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>חיפוש חלקים טקסטואלי</h1>
+
+    <label>הזן תיאור חלק:</label><br>
+    <textarea id="query" rows="4" placeholder="לדוגמה: כנף שמאל לפורד פוקוס 2018..."></textarea>
+
+    <br><br>
+    <button onclick="sendSearch()">שלח ל-Make</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

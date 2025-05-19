@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />  <title>בחירת חלקים</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+    import { PartsEngine } from './engine/PartsEngine.js';
+
+    let selectedGroup = '';
+    let filteredParts = [];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+      PartsEngine.init();
+
+      const groupSelect = document.getElementById('group');
+      groupSelect.innerHTML = PartsEngine.getGroups().map(g => `<option value="${g}">${g}</option>`).join('');
+      groupSelect.addEventListener('change', e => {
+        selectedGroup = e.target.value;
+        updatePartList('');
+      });
+
+      const partInput = document.getElementById('partInput');
+      partInput.addEventListener('input', e => updatePartList(e.target.value));
+    });
+
+    function updatePartList(query) {
+      if (!selectedGroup) return;
+      const options = PartsEngine.getParts(selectedGroup, query);
+      const datalist = document.getElementById('partList');
+      datalist.innerHTML = options.map(p => `<option value="${p}">`).join('');
+    }
+
+    function savePartSelection() {
+      const group = document.getElementById('group').value;
+      const part = document.getElementById('partInput').value;
+      const desc = document.getElementById('desc').value;
+      const condition = document.getElementById('condition').value;
+
+      if (!group || !part) return alert("בחר קבוצת חלק וחלק ספציפי");
+
+      const partObj = {
+        id: `PART-${Date.now()}`,
+        group,
+        name: part,
+        description: desc,
+        condition
+      };
+
+      const report = Meta.get('report') || {};
+      report.selectedParts = report.selectedParts || [];
+      report.selectedParts.push(partObj);
+      Meta.set('report', report);
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+
+      notify(`✔️ החלק נשמר: ${part}`);
+      window.location.href = 'parts-helper-preview.html';
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>בחירת חלקים לפי קטגוריה</h1>
+
+    <label>קבוצת חלקים:</label>
+    <select id="group"><option>-- בחר --</option></select>
+
+    <label>בחר חלק:</label>
+    <input type="text" id="partInput" list="partList" placeholder="הקלד חלק...">
+    <datalist id="partList"></datalist>
+
+    <label>תיאור/הערות:</label>
+    <input type="text" id="desc" placeholder="לדוגמה: צבע כסף, שנת 2017...">
+
+    <label>מצב החלק:</label>
+    <select id="condition">
+      <option value="חדש">חדש</option>
+      <option value="משומש">משומש</option>
+      <option value="משופץ">משופץ</option>
+    </select>
+
+    <br><br>
+    <button onclick="savePartSelection()">המשך</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

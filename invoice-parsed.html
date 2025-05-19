@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <title>סקירת חשבונית</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    let parsedInvoice = [];
+
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      parsedInvoice = Meta.get("parsedInvoice") || [];
+
+      const table = document.getElementById("invoiceTable");
+      if (!parsedInvoice.length) {
+        table.innerHTML = "<tr><td colspan='3'>🔍 אין נתונים. ודא שה-OCR פעל ושלח תוצאות.</td></tr>";
+        return;
+      }
+
+      parsedInvoice.forEach((line, idx) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${line.type}</td>
+          <td>${line.label}</td>
+          <td><input type="checkbox" id="confirm-${idx}" /></td>
+        `;
+        table.appendChild(row);
+      });
+    });
+
+    function confirmAndInject() {
+      const report = Meta.get("report") || {};
+      const confirmed = parsedInvoice.filter((_, idx) =>
+        document.getElementById(`confirm-${idx}`)?.checked
+      );
+
+      confirmed.forEach(item => {
+        const block = report.damageCenters?.find(dc =>
+          dc.centerZone === item.zone
+        );
+        if (block) {
+          if (item.type === "part") block.parts.push(item.label);
+          if (item.type === "repair") block.repairs.push(item.label);
+          if (item.type === "work") block.work.push(item.label);
+        }
+      });
+
+      Meta.set("report", report);
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+      notify("✅ חשבונית מוזגה למוקדי הנזק");
+      window.location.href = "final-confirmation.html";
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>🧾 סקירת תוצאות חשבונית</h1>
+    <p>סמן את השורות הרלוונטיות מהמוסך שברצונך למזג לתיק.</p>
+
+    <table border="1" cellpadding="6" id="invoiceTable">
+      <tr><th>סוג</th><th>פריט</th><th>לאשר</th></tr>
+    </table>
+    <br><br>
+
+    <button onclick="confirmAndInject()">📥 אשר והמשך</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

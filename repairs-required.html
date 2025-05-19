@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>תיקונים נדרשים</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>תיקונים נדרשים</h3>
+    <div class="page-content">
+      <label>נא לפרט כל תיקון בשורה חדשה:</label><br>
+      <textarea id="repairs" rows="6" placeholder="החלפת כנף...\nתיקון צבע..."></textarea>
+
+      <br><br>
+      <button onclick="saveRepairs()">המשך</button>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+
+    let currentCenter = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+      const report = Meta.get('report');
+      if (!report || !report.damageCenters || !report.damageCenters.length) {
+        alert('לא קיים מוקד נזק');
+        window.location.href = "damage-description.html";
+        return;
+      }
+      currentCenter = report.damageCenters[report.damageCenters.length - 1];
+    });
+
+    function saveRepairs() {
+      const repairs = document.getElementById('repairs').value.trim().split('\n').filter(Boolean);
+      currentCenter.repairs = repairs;
+
+      const report = Meta.get('report');
+      report.damageCenters[report.damageCenters.length - 1] = currentCenter;
+      Meta.set('report', report);
+      Meta.set("systemOrigin", "main-system-v1");
+      Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+
+      window.location.href = "work.html";
+    }
+  </script>
+</body>
+</html>

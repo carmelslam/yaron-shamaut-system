@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ניהול מערכת</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>ניהול מערכת</h3>
+    <div class="page-content">
+      <section>
+        <h2>שליטה במערכת</h2>
+        <button onclick="Admin.toggleSystemMode()">🔁 החלף בין מערכת רגילה/גיבוי</button>
+        <button onclick="Admin.setPermission()">🔒 נהל הרשאות</button>
+      </section>
+
+      <section>
+        <h2>שליפת תיק מהמטא</h2>
+        <input id="plateSearch" placeholder="מספר רכב..." />
+        <button onclick="Admin.pullCase()">📂 שלוף תיק</button>
+      </section>
+
+      <section>
+        <h2>סנכרון ועדכון</h2>
+        <button onclick="Admin.pushMetadata()">📤 עדכן מטא למערכת</button>
+        <button onclick="Admin.sendToMake()">📨 שלח דו״ח סופי</button>
+      </section>
+
+      <section>
+        <h2>דו״חות פתוחים</h2>
+        <button onclick="Admin.showPending()">📑 הצג דו״חות לא סגורים</button>
+      </section>
+
+      <section>
+        <h2>ניהול חשבוניות</h2>
+        <button onclick="window.location.href='invoice-upload.html'">🧾 העלאת חשבונית</button>
+      </section>
+
+      <section>
+        <h2>מודול חיפוש</h2>
+        <button onclick="window.location.href='search-module.html'">🔍 מעבר למודול חיפוש</button>
+      </section>
+
+      <section>
+        <h2>לוגים ועדכונים</h2>
+        <button onclick="window.location.href='notifications.html'">🔔 התראות & סטטוסים</button>
+      </section>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <title>שכר טרחה</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+
+      const report = Meta.get("report") || {};
+      if (report.feeAmount) {
+        document.getElementById("fee").value = report.feeAmount;
+      }
+    });
+
+    function saveFee() {
+      const fee = parseFloat(document.getElementById("fee").value);
+      if (isNaN(fee)) return alert("נא להזין מספר תקין");
+
+      const report = Meta.get("report") || {};
+      report.feeAmount = fee;
+      Meta.set("report", report);
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+
+      window.location.href = "summary.html";
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>הזנת שכר טרחה</h1>
+
+    <label>סכום (ש"ח):</label><br>
+    <input type="number" id="fee" placeholder="לדוגמה: 1200"><br><br>
+
+    <button onclick="saveFee()">המשך לסיכום</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

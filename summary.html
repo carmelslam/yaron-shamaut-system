@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>סיכום תיק</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>סיכום תיק</h3>
+    <div class="page-content">
+      <label>הנחיית תיקון:</label><br>
+      <select id="status">
+        <option value="">-- בחר --</option>
+        <option value="ללא סטטוס">ללא סטטוס</option>
+        <option value="לתיקון">לתיקון</option>
+        <option value="טוטאלוס TL">טוטאלוס TL</option>
+        <option value="לא לתיקון בשלב זה להכין הצעת מחיר">לא לתיקון בשלב זה להכין הצעת מחיר</option>
+        <option value="אובדן להלכה">אובדן להלכה</option>
+        <option value="מכירה במצבו הניזוק">מכירה במצבו הניזוק</option>
+        <option value="להכין הצעת מחיר">להכין הצעת מחיר</option>
+      </select><br><br>
+
+      <fieldset style="background:#f3f3f3; border:1px solid #ccc; padding:1em;">
+        <legend>הצהרה משפטית</legend>
+        <p>
+          כדי למנוע אי הבנה- שים לב להערות הר״מ:<br>
+          1. יש להודיע לשמאי על כל נזק נוסף שיתגלה במהלך התיקון ולקבל אישור בכתב להוספתו.<br>
+          2. הצעת תיקון זו כפופה לעיון בטופס התביעה.<br>
+          3. החלקים שיפורקו מהרכב יעמדו לרשות חברת הביטוח.<br>
+          4. הצעה זו אינה מחייבת את חברת הביטוח לתשלום כלשהו.
+        </p>
+      </fieldset>
+
+      <br>
+      <label><input type="checkbox" id="signed" /> אני מאשר/ת חתימה על חוות הדעת</label><br><br>
+      <button onclick="saveSummary()">⏭️ המשך לאישור סופי</button>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
+</body>
+</html>

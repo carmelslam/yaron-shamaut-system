@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>מוקד נזק</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>מוקד נזק</h3>
+    <div class="page-content">
+      <label>מוקד נזק:</label>
+      <select id="centerZone"></select><br><br>
+
+      <label>חלק עיקרי:</label>
+      <select id="damageArea"></select><br><br>
+
+      <label>תיאור חופשי:</label>
+      <textarea id="description" rows="3" placeholder="לדוגמה: כנף שמאל פגועה..."></textarea><br><br>
+
+      <button onclick="launchPartsSearch()">+ חפש חלקים למוקד זה</button>
+      <ul id="selectedPartsList" style="margin-top:10px;"></ul><br>
+
+      <label>תיקונים (מופרדים בפסיקים):</label>
+      <input type="text" id="repairs"><br><br>
+
+      <label>עבודות (מופרדים בפסיקים):</label>
+      <input type="text" id="work"><br><br>
+
+      <label>שיעור ירידת ערך (%):</label>
+      <input type="number" id="depreciation"><br><br>
+
+      <label>הנזק מחייב תקנה 309:</label>
+      <select id="regulation309">
+        <option value="">בחר</option>
+        <option>כן</option>
+        <option>לא</option>
+      </select><br><br>
+
+      <button onclick="saveDamageBlock()">✔️ שמור מוקד והמשך</button>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+
+    const zones = [
+      "-", "חזית", "קדמי ימין", "ימין קדמי", "ימין",
+      "אחורי ימין", "ימין אחורי", "אחורי", "אחורי שמאל",
+      "שמאל אחורי", "שמאל", "שמאל קדמי", "קדמי שמאל",
+      "סביב הרכב", "פנים הרכב", "מיכאני", "אחר"
+    ];
+
+    const parts = [
+      "-", "כנף", "דלת", "פגוש", "פנס", "מכסה מנוע",
+      "שמשה", "גג", "שלדה", "מכני", "אחר"
+    ];
+
+    function populate(id, arr) {
+      const select = document.getElementById(id);
+      arr.forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.textContent = val;
+        select.appendChild(opt);
+      });
+    }
+
+    window.launchPartsSearch = () => {
+      Meta.set("pendingDamageCenter", getFormData());
+      window.location.href = "parts-selection.html";
+    };
+
+    window.saveDamageBlock = () => {
+      const data = getFormData();
+      if (!data.centerZone || !data.description) {
+        alert("נא למלא לפחות מוקד נזק ותיאור");
+        return;
+      }
+      const report = Meta.get("report") || {};
+      report.damageCenters = report.damageCenters || [];
+      report.damageCenters.push(data);
+      Meta.set("report", report);
+      Meta.set("systemOrigin", "main-system-v1");
+      Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+      window.location.href = "damage-confirm.html";
+    };
+
+    function getFormData() {
+      return {
+        id: `CENTER-${Date.now()}`,
+        centerZone: document.getElementById("centerZone").value,
+        damageArea: document.getElementById("damageArea").value,
+        description: document.getElementById("description").value.trim(),
+        repairs: document.getElementById("repairs").value.trim().split(',').map(x => x.trim()).filter(Boolean),
+        work: document.getElementById("work").value.trim().split(',').map(x => x.trim()).filter(Boolean),
+        parts: [],
+        depreciation: parseFloat(document.getElementById("depreciation").value) || 0,
+        regulation309: document.getElementById("regulation309").value
+      };
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      populate("centerZone", zones);
+      populate("damageArea", parts);
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
+</body>
+</html>

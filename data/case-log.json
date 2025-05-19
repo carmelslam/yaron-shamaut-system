@@ -1,0 +1,20 @@
+[
+  {
+    "plate": "5785269",
+    "date": "2025-04-04",
+    "garage": "מוסך מרכזי חיפה",
+    "owner": "דידי כהן",
+    "finalized": false,
+    "reportURL": "/reports/5785269.html",
+    "metaPath": "/data/cases/5785269.json"
+  },
+  {
+    "plate": "2873091",
+    "date": "2025-03-28",
+    "garage": "אלפא מוסכים",
+    "owner": "איתן אביטל",
+    "finalized": true,
+    "reportURL": "/reports/2873091.html",
+    "metaPath": "/data/cases/2873091.json"
+  }
+]

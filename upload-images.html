@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>העלאת תמונות</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>העלאת תמונות</h3>
+    <div class="page-content">
+      <input type="file" accept="image/*" multiple onchange="handleFiles(this.files)">
+      <div id="preview"></div>
+
+      <br><br>
+      <button onclick="sendImagesToMake('https://hook.eu2.make.com/yksx9gtoxggvpalsjw2n1ut4kdi4jt24', 'images-upload')">
+        📨 שלח תמונות לתיק והמשך
+      </button>
+
+      <p class="toggle" onclick="toggleMoreOptions()">+ אפשרויות נוספות</p>
+      <div id="moreOptions" class="more-options">
+        <button onclick="sendImagesToMake('https://hook.eu2.make.com/pum6ogmlxfe2edi8wd5i1d9oybcus76f', 'transform')">
+          🎯 שלח לאופטימיזציה וסימון
+        </button>
+        <br><br>
+        <button onclick="sendImagesToMake('https://hook.eu2.make.com/uzc5fd69shl29muu0t45mm92gq3r2ogb', 'create-pdf')">
+          📄 צור PDF חלקים
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+
+    let base64Images = [];
+
+    function handleFiles(files) {
+      base64Images = [];
+      const preview = document.getElementById("preview");
+      preview.innerHTML = '';
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function () {
+          const base64 = reader.result;
+          base64Images.push(base64);
+          const img = document.createElement('img');
+          img.src = base64;
+          img.className = 'preview';
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function sendImagesToMake(hookUrl, mode = "") {
+      if (!base64Images.length) return alert("יש לבחור תמונות");
+
+      const payload = {
+        caseId: Meta.get("caseId"),
+        systemOrigin: "main-system-v1",
+        mode,
+        images: base64Images
+      };
+
+      try {
+        const res = await fetch(hookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          Meta.set("reportImages", base64Images);
+          notify("✅ התמונות נשלחו בהצלחה");
+        } else {
+          notify("⚠️ שגיאה בשליחה");
+        }
+      } catch (err) {
+        notify("❌ שגיאה ברשת: " + err.message);
+      }
+    }
+
+    function toggleMoreOptions() {
+      const more = document.getElementById("moreOptions");
+      more.style.display = more.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</body>
+</html>

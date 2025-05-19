@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>פתיחת תיק</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>פתיחת תיק</h3>
+    <div class="page-content">
+      <input type="text" id="plate" placeholder="1234567" />
+      <input type="text" id="owner" placeholder="שם בעלים" />
+      <input type="date" id="date" />
+      <input type="text" id="location" placeholder="מיקום הבדיקה (למשל: מוסך חיפה)" />
+      <br><br>
+      <button onclick="startCase()">התחל דוח חדש</button>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+    function startCase() {
+      const plate = document.getElementById("plate").value.trim();
+      const owner = document.getElementById("owner").value.trim();
+      const date = document.getElementById("date").value;
+      const location = document.getElementById("location").value.trim();
+      if (!plate || !owner || !date || !location) {
+        return alert("נא למלא את כל השדות");
+      }
+      Meta.set("car", {
+        plateNumber: plate,
+        inspectionDate: date,
+        location
+      });
+      window.location.href = "manual-details.html";
+    }
+  </script>
+</body>
+</html>

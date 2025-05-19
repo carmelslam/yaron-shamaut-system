@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+<title>שיעורי ירידת ערך</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+
+      const report = Meta.get('report') || {};
+      const container = document.getElementById("damageFields");
+      const centers = report.damageCenters || [];
+
+      centers.forEach((block, idx) => {
+        const id = `depr-${idx}`;
+        const label = document.createElement('label');
+        label.innerText = `מוקד ${idx + 1}: ${block.description}`;
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.id = id;
+        input.placeholder = '%';
+
+        container.appendChild(label);
+        container.appendChild(input);
+        container.appendChild(document.createElement('br'));
+      });
+    });
+
+    function saveDepreciation() {
+      const global = document.getElementById("global").value;
+      const report = Meta.get("report");
+      const centers = report.damageCenters || [];
+
+      if (global) report.globalDepreciation = parseFloat(global);
+
+      centers.forEach((block, idx) => {
+        const field = document.getElementById(`depr-${idx}`);
+        block.depreciation = parseFloat(field.value || 0);
+        report.damageCenters[idx] = block;
+      });
+
+      Meta.set("report", report);
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+      window.location.href = "fee-module.html";
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>הזנת ירידת ערך</h1>
+
+    <label>ירידת ערך כללית (%):</label><br>
+    <input type="number" id="global" placeholder="לדוגמה: 10"><br><br>
+
+    <div id="damageFields"></div>
+
+    <br>
+    <button onclick="saveDepreciation()">המשך לשכר טרחה</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

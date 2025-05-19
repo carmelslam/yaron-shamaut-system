@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <title>אישור סופי וסגירת תיק</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script type="module">
+    import { Meta } from "./engine/MetaEngine.js";
+    import { notify } from "./engine/notify.js";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      if (!Meta.get("systemOrigin")) Meta.set("systemOrigin", "main-system-v1");
+      if (!Meta.get("caseId") && Meta.get("car")?.plateNumber) {
+        Meta.set("caseId", `YC-${Meta.get("car").plateNumber}-${new Date().getFullYear()}`);
+      }
+    });
+
+    function confirmFinalization() {
+      const checks = [
+        "confirmDamages",
+        "confirmDepreciation",
+        "confirmLevi",
+        "confirmInvoice",
+        "confirmMeta"
+      ];
+
+      const allConfirmed = checks.every(id => document.getElementById(id)?.checked);
+
+      if (!allConfirmed) return alert("⚠️ נא לאשר את כל הסעיפים לפני סגירת התיק.");
+
+      const report = Meta.get("report") || {};
+      report.finalized = true;
+      Meta.set("report", report);
+
+      notify("✅ כל הסעיפים אושרו. התיק מוכן לסגירה.");
+      window.location.href = "final-report.html";
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>אישור סופי לסגירת תיק</h1>
+
+    <label><input type="checkbox" id="confirmDamages" /> אישור על חלקים, תיקונים ועבודות</label><br>
+    <label><input type="checkbox" id="confirmDepreciation" /> אישור על ירידת ערך לכל מוקד</label><br>
+    <label><input type="checkbox" id="confirmLevi" /> אישור על שווי רכב ותיקוני לוי</label><br>
+    <label><input type="checkbox" id="confirmInvoice" /> החשבונית התקבלה והוזנה (OCR)</label><br>
+    <label><input type="checkbox" id="confirmMeta" /> אימות תקינות מידע כללי ומזהה תיק</label><br><br>
+
+    <button onclick="confirmFinalization()">🔒 אשר וסיים</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

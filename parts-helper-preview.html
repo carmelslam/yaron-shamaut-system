@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>תצוגת עזר חלקים</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>תצוגת עזר חלקים</h3>
+    <div class="page-content">
+      <div id="preview" class="preview-box"></div>
+      <br>
+      <button onclick="proceedToIframe()">המשך לאתר</button>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+
+      const container = document.getElementById("preview");
+      const parts = Meta.get('report')?.selectedParts || [];
+
+      if (!parts.length) {
+        container.innerHTML = "<p>לא נבחרו חלקים.</p>";
+        return;
+      }
+
+      const formHTML = parts.map((p, i) => `
+        <div class="form-row">
+          <strong>חלק ${i + 1}:</strong><br>
+          <label>קטגוריה:</label> ${p.group}<br>
+          <label>שם:</label> ${p.name}<br>
+          <label>תיאור:</label> ${p.description || '---'}<br>
+          <label>מצב:</label> ${p.condition}<br><br>
+        </div>
+      `).join('');
+
+      container.innerHTML = formHTML;
+    });
+
+    function proceedToIframe() {
+      window.location.href = "parts-platform.html";
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+    }
+  </script>
+</body>
+</html>

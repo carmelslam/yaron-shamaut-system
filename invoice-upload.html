@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <title>העלאת חשבונית מוסך</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    let base64 = "";
+
+    function previewAndEncode(file) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        base64 = reader.result;
+        document.getElementById("preview").src = base64;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function sendToOCR() {
+      if (!base64) return alert("יש לבחור קובץ חשבונית קודם");
+
+      const meta = Meta.getAll();
+      const payload = {
+        caseId: meta.caseId,
+        plate: meta.car?.plate || "",
+        systemOrigin: "main-system-v1",
+        invoiceImage: base64
+      };
+
+      try {
+        const res = await fetch("https://hook.eu2.make.com/sqai1jt79ujmh6v7jqf83uew71jxq2mk", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          notify("📨 החשבונית נשלחה ל-OCR");
+        } else {
+          notify("⚠️ שליחה נכשלה");
+        }
+      } catch (e) {
+        notify("❌ שגיאה ברשת: " + e.message);
+      }
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>🧾 העלאת חשבונית מוסך</h1>
+
+    <input type="file" accept="image/*,.pdf" onchange="previewAndEncode(this.files[0])" /><br><br>
+    <img id="preview" src="" alt="תצוגה מקדימה" style="max-width: 300px; display: block;" />
+
+    <br>
+    <button onclick="sendToOCR()">📤 שלח ל-OCR במערכת</button>
+  </main>
+
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+/* 🔧 Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🖥️ Universal Body Styling */
+body {
+  font-family: "David", sans-serif;
+  padding: 20px;
+  line-height: 1.7;
+  color: #222;
+  background: #fff;
+  direction: rtl;
+}
+
+/* 📛 Headers */
+h1, h2, h3 {
+  margin-bottom: 10px;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+/* 📦 Sections */
+.section {
+  margin-bottom: 30px;
+}
+
+/* 📑 Inputs & Forms */
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+input, select, textarea, button {
+  padding: 8px;
+  font-size: 1em;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+button {
+  background: #2b6cb0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background: #225ea8;
+}
+
+/* 🧾 Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: right;
+}
+
+/* 🖼️ Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+/* ✅ System Branding Layout */
+
+.centered {
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.logo {
+  max-width: 140px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 5px;
+  border: none;
+}
+
+h2 {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 30px;
+  border: none;
+}
+
+.page-content {
+  margin-top: 30px;
+}
+
+.main-footer {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 0.85em;
+  color: #666;
+}
+
+
+/* 🧠 Responsive Enhancements */
+@media screen and (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+  h1 {
+    font-size: 1.4em;
+  }
+}

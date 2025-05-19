@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>פרטים כלליים</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>פרטים כלליים</h3>
+    <div class="page-content">
+      <form id="generalForm">
+        <label>מד אוץ:</label>
+        <input type="number" name="odo" required />
+
+        <label>תאריך הנזק:</label>
+        <input type="date" name="damageDate" required />
+
+        <label>כתובת בעל רכב:</label>
+        <input type="text" name="ownerAddress" required />
+
+        <label>טלפון בעל רכב:</label>
+        <input type="text" name="ownerPhone" required />
+
+        <label>שם מוסך:</label>
+        <input type="text" name="garageName" required />
+
+        <label>טלפון מוסך:</label>
+        <input type="text" name="garagePhone" />
+
+        <label>אימייל מוסך:</label>
+        <input type="email" name="garageEmail" />
+
+        <label>סוג נזק:</label>
+        <select name="damageType" required>
+          <option value="">בחר</option>
+          <option>לפוליסה</option>
+          <option>צד ג</option>
+          <option>גלובאלי</option>
+          <option>משפטי</option>
+          <option>זדון</option>
+          <option>הצפה</option>
+          <option>אחר</option>
+        </select>
+
+        <label>חברת ביטוח:</label>
+        <select name="insuranceCompany" required>
+          <option value="">בחר</option>
+          <option>הראל</option>
+          <option>איילון</option>
+          <option>הפניקס</option>
+          <option>מנורה</option>
+          <option>מגדל</option>
+          <option>ליברה</option>
+          <option>כלל ביטוח</option>
+          <option>ביטוח ישיר</option>
+          <option>אחר</option>
+        </select>
+
+        <label>אימייל חברת ביטוח:</label>
+        <input type="email" name="insuranceEmail" />
+
+        <label>שם סוכן ביטוח:</label>
+        <input type="text" name="agentName" />
+
+        <label>טלפון סוכן ביטוח:</label>
+        <input type="text" name="agentPhone" />
+
+        <label>אימייל סוכן ביטוח:</label>
+        <input type="email" name="agentEmail" />
+
+        <label>מיקום בדיקה:</label>
+        <input type="text" name="inspectionLocation" />
+
+        <br><br>
+        <button type="submit">המשך</button>
+      </form>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
+</body>
+</html>

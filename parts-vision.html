@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />  <title>חיפוש חלקים לפי תמונה</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    let base64Image = "";
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+    });
+
+    function previewFile() {
+      const file = document.getElementById("upload").files[0];
+      const reader = new FileReader();
+      reader.onload = function () {
+        base64Image = reader.result;
+        document.getElementById("preview").src = base64Image;
+      };
+      if (file) reader.readAsDataURL(file);
+    }
+
+    async function sendImage() {
+      if (!base64Image) return alert("יש לבחור תמונה קודם");
+
+      const car = Meta.get("car") || {};
+      const payload = {
+        caseId: Meta.get("caseId"),
+        systemOrigin: "main-system-v1",
+        mode: "image-search",
+        imageData: base64Image,
+        carDetails: {
+          plate: car.plate,
+          make: car.make,
+          model: car.model,
+          year: car.year,
+          engine: car.engine
+        }
+      };
+
+      try {
+        const res = await fetch("https://hooks.make.com/parts-image-search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          notify("📤 התמונה נשלחה ל-Make");
+          window.location.href = "summary.html"; // or results handler
+        } else {
+          notify("⚠️ השליחה נכשלה");
+        }
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+      } catch (e) {
+        notify("❌ שגיאה: " + e.message);
+      }
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>חיפוש חלק לפי תמונה</h1>
+
+    <input type="file" id="upload" accept="image/*" onchange="previewFile()"><br><br>
+    <img id="preview" src="" alt="תצוגה מקדימה" style="max-width: 300px; display:block;"><br>
+
+    <button onclick="sendImage()">שלח ל-Make</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

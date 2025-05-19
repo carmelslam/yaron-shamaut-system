@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>סוגי עבודות</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+
+    const workTypes = [
+      "כל עבודות הפחחות כולל פירוקים והרכבות",
+      "עבודות צבע",
+      "עבודות חשמל",
+      "עבודות מכונאות",
+      "עבודות מזגן",
+      "עבודות ריפוד",
+      "עבודות זגגות",
+      "איטום וזיפות",
+      "בדיקת מתלה",
+      "כיול רדאר",
+      "העברת חיישנים"
+    ];
+
+    let currentCenter = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      Meta.verify();
+      const report = Meta.get('report');
+      if (!report || !report.damageCenters || !report.damageCenters.length) {
+        alert("מוקד נזק לא קיים");
+        window.location.href = "damage-description.html";
+        return;
+      }
+
+      currentCenter = report.damageCenters[report.damageCenters.length - 1];
+
+      const list = document.getElementById("workList");
+      workTypes.forEach(w => {
+        const label = document.createElement("label");
+        label.innerHTML = `<input type="checkbox" value="${w}"> ${w}`;
+        list.appendChild(label);
+        list.appendChild(document.createElement("br"));
+      });
+    });
+
+    function saveWorkTypes() {
+      const selected = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(cb => cb.value);
+      const reg309 = document.getElementById("reg309").value;
+
+      currentCenter.work = selected;
+      currentCenter.regulation309 = reg309;
+
+      const report = Meta.get('report');
+      report.damageCenters[report.damageCenters.length - 1] = currentCenter;
+      Meta.set('report', report);
+
+      window.location.href = "parts-full.html";
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>סוגי עבודות למוקד</h1>
+
+    <div id="workList"></div>
+
+    <br>
+    <label for="reg309">הנזק מחייב תקנה 309?</label><br>
+    <select id="reg309">
+      <option value="">-- בחר --</option>
+      <option value="כן">כן</option>
+      <option value="לא">לא</option>
+    </select>
+
+    <br><br>
+    <button onclick="saveWorkTypes()">המשך</button>
+  </main>
+
+  <footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+</body>
+</html>

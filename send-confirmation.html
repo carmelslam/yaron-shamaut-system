@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />  <title>שליחת חוות דעת</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+
+      const plate = Meta.get("car")?.plateNumber || "";
+      const date = Meta.get("car")?.inspectionDate || "";
+      const email = Meta.get("client")?.email || "";
+
+      document.getElementById("plate").value = plate;
+      document.getElementById("date").value = date;
+      document.getElementById("email").value = email;
+    });
+
+    function sendToMake() {
+      const plate = document.getElementById("plate").value.trim();
+      const date = document.getElementById("date").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (!plate || !date || !email) {
+        alert("🛑 נא למלא את כל השדות: מספר רכב, תאריך בדיקה ודוא\"ל");
+        return;
+      }
+
+      const url = `https://sendformtomake.netlify.app/?plate=${plate}&date=${date}&email=${email}`;
+      window.location.href = url;
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>🚀 שליחת האקספירטיזה</h1>
+    <p>לאחר לחיצה, הדוח יישלח למערכת וייסגר.</p>
+
+    <label>📛 מספר רכב:</label><br>
+    <input id="plate" type="text" placeholder="לדוגמה: 5785269" /><br><br>
+
+    <label>📅 תאריך בדיקה:</label><br>
+    <input id="date" type="date" /><br><br>
+
+    <label>📧 אימייל מוסך / לקוח:</label><br>
+    <input id="email" type="email" placeholder="example@domain.com" /><br><br>
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+    <button onclick="sendToMake()">📨 שלח</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>

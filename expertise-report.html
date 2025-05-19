@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>דו"ח שמאות - אקספירטיזה</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+
+    function uploadPDF(blob, filename = "expertise-report.pdf") {
+      const formData = new FormData();
+      formData.append("file", blob, filename);
+
+      fetch("https://sla.carmelcayouf.com/uploads/upload.php", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          console.log("✅ Uploaded to:", data.url);
+        } else {
+          alert("Upload failed: " + data.message);
+        }
+      })
+      .catch(err => {
+        console.error("Upload error:", err);
+        alert("שגיאה בהעלאה");
+      });
+    }
+
+    window.downloadPDF = () => {
+      const element = document.getElementById("reportArea");
+      const filename = `expertise-${Meta.get("caseId") || Date.now()}.pdf`;
+      const opt = {
+        filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).outputPdf('blob').then(blob => {
+        uploadPDF(blob, filename);
+        html2pdf().set(opt).from(element).save();
+      });
+    };
+  </script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>דו"ח שמאות - חוות דעת</h3>
+    <div class="page-content" id="reportArea">⏳ טוען חוות דעת...</div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+</body>
+</html>

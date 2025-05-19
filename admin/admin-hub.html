@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ניהול מערכת</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>ניהול מערכת</h3>
+    <div class="page-content">
+      <label>בחר מצב מערכת:</label>
+      <select id="mode" onchange="switchMode()">
+        <option value="main">🔵 מערכת ראשית</option>
+        <option value="manual">🟠 מערכת גיבוי</option>
+      </select>
+
+      <hr />
+
+      <h2>📥 טען מקרה מהמטאדאטה</h2>
+      <input type="file" accept="application/json" onchange="uploadMetadataFile(event)" />
+
+      <hr />
+
+      <h2>📤 שלח מטאדאטה ל-Make</h2>
+      <button onclick="pushMetaToMake()">עדכן שרת Make</button>
+
+      <hr />
+
+      <h2>📑 הפקת דוחות</h2>
+      <a href="../final-report.html">מעבר לדו״ח הסופי</a>
+
+      <hr />
+
+      <h2>🔐 הרשאות משתמשים</h2>
+      <p>🧑‍💼 ניהול משתמשים יבוצע בגרסת SaaS דרך DB או מערכת רולינג.</p>
+
+      <hr />
+
+      <h2>🔍 חיפוש כללי במערכת</h2>
+      <a href="../search.html">מעבר למודול החיפוש</a>
+
+      <hr />
+
+      <h2>🧾 חשבוניות</h2>
+      <a href="../invoice-upload.html">כניסה למודול העלאת חשבוניות</a>
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+  <script type="module">
+    import { Meta } from '../engine/MetaEngine.js';
+    import { maybeInitPush } from '../engine/push-handler.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+
+    function switchMode() {
+      const mode = document.getElementById("mode").value;
+      const cfg = Meta.get("config") || {};
+      cfg.mode = mode;
+      Meta.set("config", cfg);
+      notify("🧠 מצב המערכת עודכן ל: " + (mode === "manual" ? "גיבוי" : "ראשי"));
+    }
+
+    function uploadMetadataFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const meta = JSON.parse(e.target.result);
+        Meta.setAll(meta);
+        notify("📂 מקרה נטען בהצלחה מהמטאדאטה");
+      };
+      reader.readAsText(file);
+    }
+
+    function pushMetaToMake() {
+      Admin.pushMetadata();
+    }
+  </script>
+</body>
+</html>

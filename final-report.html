@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>דו"ח סופי</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <script src="assets/js/session-timeout.js" defer></script>
+  <style>
+    body {
+      font-family: "David", sans-serif;
+      background: #fff;
+      padding: 20px;
+      line-height: 1.7;
+      color: #222;
+    }
+    .section { margin-bottom: 30px; }
+    .signature { margin-top: 40px; text-align: left; }
+    .download-btn {
+      margin-top: 20px;
+      background: #222;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #statusLabel {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
+    .centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+    .main-footer {
+      text-align: center;
+      padding: 10px 0;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      background: #f1f1f1;
+    }
+  </style>
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { maybeInitPush } from './engine/push-handler.js';
+
+    window.addEventListener("DOMContentLoaded", () => {
+      Meta.verify();
+      maybeInitPush();
+    });
+  </script>
+</head>
+<body>
+  <main class="centered">
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
+    <h1>ירון כיוף</h1>
+    <h2>שמאות והערכת נזקי רכב ורכוש</h2>
+    <h3>דו"ח סופי</h3>
+    <div class="page-content">
+      <!-- ...existing form/fields/buttons for final report... -->
+    </div>
+  </main>
+  <footer class="main-footer">
+    All rights reserved © Carmel Cayouf
+  </footer>
+</body>
+</html>

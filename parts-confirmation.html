@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+ <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://carmelcayouf.com/wp-content/uploads/2025/04/logo-yaron.webp" />
+  <link rel="stylesheet" href="assets/css/styles.css" />  <title>אישור ושליחה</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script type="module">
+    import { Meta } from './engine/MetaEngine.js';
+    import { notify } from './engine/notify.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const parts = Meta.get('report')?.selectedParts || [];
+      const resultHTML = Meta.get("partsResponseHtml") || "⚠️ לא נשמרו תוצאות מהאתר";
+
+      const output = document.getElementById("partsList");
+      output.innerHTML = parts.map(p =>
+        `<li><b>${p.name}</b> (${p.group}) — ${p.condition}</li>`
+      ).join('');
+
+      document.getElementById("htmlPreview").textContent = resultHTML.slice(0, 1000) + '...';
+    });
+
+    async function sendToMake() {
+      const payload = {
+        caseId: Meta.get("caseId"),
+        systemOrigin: "main-system-v1",
+        selectedParts: Meta.get("report")?.selectedParts || [],
+        partsResponseRaw: Meta.get("partsResponseHtml") || ""
+      };
+
+      try {
+        const res = await fetch('https://hooks.make.com/send-parts-final', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          notify("📤 נשלח בהצלחה ל-Make");
+        } else {
+          notify("⚠️ שליחה נכשלה");
+        }
+      } catch (err) {
+        notify("❌ שגיאה: " + err.message);
+      }
+Meta.set("systemOrigin", "main-system-v1");
+Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
+
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <h1>אישור ושליחת חלקים</h1>
+
+    <h3>📦 חלקים שנבחרו:</h3>
+    <ul id="partsList"></ul>
+
+    <h3>📄 קוד HTML שנשמר מהאתר:</h3>
+    <pre id="htmlPreview"></pre>
+
+    <br>
+    <button onclick="sendToMake()">שלח ל-Make</button>
+  </main>
+<footer style="margin-top:40px; text-align:center; font-size:0.85em; color:#666;">
+    <p>All rights reserved © Carmel Cayouf</p>
+  </footer>
+<script type="module">
+  import { Meta } from './engine/MetaEngine.js';
+
+  window.addEventListener("DOMContentLoaded", () => {
+    Meta.init({ systemOrigin: "main-system-v1" });
+    Meta.verify();
+  });
+</script>
+
+</body>
+</html>
