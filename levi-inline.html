@@ -6,11 +6,12 @@
   <title>לוי אינליין</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
   <script src="assets/js/session-timeout.js" defer></script>
 </head>
 <body>
   <main class="centered">
-    <img src="assets/img/logo-yaron.webp" class="logo" alt="לוגו" />
+    <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
     <h1>ירון כיוף</h1>
     <h2>שמאות והערכת נזקי רכב ורכוש</h2>
     <h3>לוי אינליין</h3>
@@ -27,6 +28,7 @@
     import { Meta } from './engine/MetaEngine.js';
     import { maybeInitPush } from './engine/push-handler.js';
     window.addEventListener("DOMContentLoaded", () => {
+      Meta.init({ systemOrigin: "main-system-v1" });
       Meta.verify();
       maybeInitPush();
     });

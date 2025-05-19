@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ירון כיוף | פורטל שמאות</title>
+  <title>התחברות למערכת</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
@@ -23,39 +23,37 @@
   <footer class="main-footer">
     All rights reserved © Carmel Cayouf
   </footer>
+  <script>
+    async function enter() {
+      const input = document.getElementById("password").value.trim();
 
-  <!-- Auth Handler -->
-<script>
-async function enter() {
-  const input = document.getElementById("password").value.trim();
+      const res = await fetch("https://hook.eu2.make.com/7yjzw6g5p0p9nx4if96khsmipch7o1dk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: input })
+      });
 
-  const res = await fetch("https://hook.eu2.make.com/7yjzw6g5p0p9nx4if96khsmipch7o1dk", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password: input })
-  });
+      const result = await res.json();
 
-  const result = await res.json();
+      if (result?.status === "accepted") {
+        const sound = new Audio("assets/sfx/ignition.mp3");
+        sound.play();
 
-  if (result?.status === "accepted") {
-    const sound = new Audio("assets/sfx/ignition.mp3");
-    sound.play();
+        // Visual animation (full screen feedback)
+        document.body.innerHTML = `
+          <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;">
+            <img src="assets/img/logo-yaron.webp" style="width: 140px; margin-bottom: 20px;" />
+            <p style="font-size: 24px;">מתחבר...</p>
+          </div>
+        `;
 
-    // Visual animation (full screen feedback)
-    document.body.innerHTML = `
-      <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;">
-        <img src="assets/img/logo-yaron.webp" style="width: 140px; margin-bottom: 20px;" />
-        <p style="font-size: 24px;">מתחבר...</p>
-      </div>
-    `;
-
-    setTimeout(() => {
-      window.location.href = "start-case.html";
-    }, 1700); // delay to let sound finish
-  } else {
-    alert("סיסמה שגויה");
-  }
-}
-</script>
+        setTimeout(() => {
+          window.location.href = "start-case.html";
+        }, 1700); // delay to let sound finish
+      } else {
+        alert("סיסמה שגויה");
+      }
+    }
+  </script>
 </body>
 </html>

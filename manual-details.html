@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>אתר חלקים - מוטמע</title>
+  <title>פרטים כלליים</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="assets/css/layout.css" />
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
@@ -14,13 +14,11 @@
     <img src="assets/img/logo-yaron.webp" alt="לוגו" class="logo" />
     <h1>ירון כיוף</h1>
     <h2>שמאות והערכת נזקי רכב ורכוש</h2>
-    <h3>אתר חלקים - מוטמע</h3>
+    <h3>פרטים כלליים</h3>
     <div class="page-content">
-      <iframe src="https://www.car-part.co.il" id="siteIframe"></iframe>
-      <div class="actions">
-        <button onclick="saveIframeContent()">📥 שמור תשובה מהאתר</button>
-        <button onclick="window.history.back()">↩️ חזור</button>
-      </div>
+      <form id="generalForm">
+        <!-- form fields here -->
+      </form>
     </div>
   </main>
   <footer class="main-footer">
@@ -34,16 +32,6 @@
       Meta.verify();
       maybeInitPush();
     });
-    function saveIframeContent() {
-      const iframe = document.getElementById("siteIframe");
-      const doc = iframe.contentDocument || iframe.contentWindow.document;
-      const html = doc.documentElement.outerHTML;
-      Meta.set("partsResponseHtml", html);
-      Meta.set("systemOrigin", "main-system-v1");
-      Meta.set("caseId", `YC-${Meta.get("car")?.plateNumber}-${new Date().getFullYear()}`);
-      notify("✅ נתוני החלקים נשמרו מהאתר");
-      window.location.href = "parts-confirmation.html";
-    }
   </script>
 </body>
 </html>
